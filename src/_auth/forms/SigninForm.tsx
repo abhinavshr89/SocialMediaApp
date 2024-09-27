@@ -10,17 +10,14 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import Loader from "@/components/shared/Loader";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import {
-  useSignInAccount,
-} from "@/lib/react-query/queriesAndMutations";
+import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
 import { SigninValidation } from "@/lib/validation";
+
 
 const SigninForm = () => {
   const navigate = useNavigate();
@@ -129,7 +126,10 @@ const SigninForm = () => {
 
           <p className="text-small-regular text-light-2 text-center mt-2">
             Don't have an Account?
-            <Link to="/sign-up" className="text-primary-500 text-small-semibold ml-1">
+            <Link
+              to="/sign-up"
+              className="text-primary-500 text-small-semibold ml-1"
+            >
               Register Here
             </Link>
           </p>

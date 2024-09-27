@@ -1,9 +1,13 @@
-import React from 'react'
-import { Button } from "@/components/ui/button"
+
 import Loader from '@/components/shared/Loader';
+import { useGetRecentPosts } from '@/lib/react-query/queriesAndMutations';
+import { Models } from 'appwrite';
+import PostCard from '@/components/shared/PostCard';
 
 const Home = () => {
-  const isPostLoading = true;
+  
+
+  const {data:posts,isPending : isPostLoading,}= useGetRecentPosts();
 
   return (
     <div className='flex flex-1'>
@@ -16,8 +20,11 @@ const Home = () => {
               isPostLoading?(
                 <Loader/>
               ):(
-                <ul>
-                  
+                <ul className='flex flex-col flex-1 gap-9 w-full'>
+                  {posts?.documents.map((post:Models.Document)=>(
+                    
+                    <PostCard post={post}/>
+                  ))}
                 </ul>
               )
             }

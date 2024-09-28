@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { IContextType, IUser } from "@/types";
 import { getCurrentUser } from "@/lib/appwrite/api";

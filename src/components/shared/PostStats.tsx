@@ -1,4 +1,3 @@
-
 import {
   useDeleteSavedPost,
   useGetCurrentUser,
@@ -9,33 +8,33 @@ import { checkIsLiked } from "@/lib/utils";
 import { Models } from "appwrite";
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
-import SavedIcon from "../../../public/assets/icons/saved.svg"
-import SaveIcon from "../../../public/assets/icons/save.svg"
+import SavedIcon from "../../../public/assets/icons/saved.svg";
+import SaveIcon from "../../../public/assets/icons/save.svg";
+
 type PostStatsProps = {
   post?: Models.Document;
   userId: string;
 };
 
 const PostStats = ({ post, userId }: PostStatsProps) => {
-  const likesList = post?.likes.map((user: Models.Document) => user.$id);
+  const likesList = post?.likes?.map((user: Models.Document) => user.$id) || []; // Fallback to empty array
 
   const [likes, setLikes] = useState(likesList);
   const [isSaved, setIsSaved] = useState(false);
 
   const { mutate: likePost } = useLikePost();
   const { mutate: savePost, isPending: isSavingPost } = useSavePost();
-  const { mutate: deleteSavedPost} =
-    useDeleteSavedPost();
+  const { mutate: deleteSavedPost } = useDeleteSavedPost();
 
   const { data: currentUser } = useGetCurrentUser();
 
-  const savedPostRecord = currentUser?.save.find(
+  const savedPostRecord = currentUser?.save?.find(
     (record: Models.Document) => record.post.$id === post?.$id
   );
 
   useEffect(() => {
     setIsSaved(!!savedPostRecord);
-  }, [currentUser]);
+  }, [currentUser, savedPostRecord]);
 
   const handleLikePost = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -62,7 +61,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
       return deleteSavedPost(savedPostRecord.$id);
     }
 
-    savePost({ userId: userId, postId: post?.$id||"" });
+    savePost({ userId: userId, postId: post?.$id || "" });
     setIsSaved(true);
   };
 
@@ -81,7 +80,6 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
           onClick={handleLikePost}
           className="cursor-pointer"
         />
-
         <p className="small-medium lg:base-medium">{likes.length}</p>
       </div>
 
@@ -90,11 +88,8 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
           <Loader />
         ) : (
           <img
-            src={`${
-              isSaved ? SavedIcon :SaveIcon 
-            }`}
-          
-            alt="like"
+            src={`${isSaved ? SavedIcon : SaveIcon}`}
+            alt="save"
             width={20}
             height={20}
             onClick={handleSavePost}

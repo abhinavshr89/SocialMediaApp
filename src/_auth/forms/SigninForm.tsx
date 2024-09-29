@@ -17,12 +17,14 @@ import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { SigninValidation } from "@/lib/validation";
+import { useState } from "react";
 
 
 const SigninForm = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { checkAuthUser } = useUserContext();
+  const [isLoggingIn,setIsLoggingIn]= useState();
 
   const { mutateAsync: signInAccount, isPending: isSigningIn } =
     useSignInAccount();
@@ -36,6 +38,7 @@ const SigninForm = () => {
   });
 
   async function onSubmit(user: z.infer<typeof SigninValidation>) {
+    setIsLoggingIn(true);
     try {
       const session = await signInAccount({
         email: user.email,
@@ -59,6 +62,8 @@ const SigninForm = () => {
       return toast({
         title: "An error occurred during sign-in. Please try again.",
       });
+    }finally{
+      setIsLoggingIn(false);
     }
   }
 
@@ -115,9 +120,9 @@ const SigninForm = () => {
           />
 
           <Button type="submit" className="shad-button_primary">
-            {isSigningIn ? (
+            {isLoggingIn ? (
               <div className="flex-center gap-2">
-                <Loader /> Loading...
+                <Loader/>
               </div>
             ) : (
               "Sign In"

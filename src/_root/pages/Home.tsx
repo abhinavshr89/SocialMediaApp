@@ -7,6 +7,9 @@ import { useEffect } from 'react';
 import { useUserContext } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+
+
+
 const Home = () => {
   const navigate = useNavigate();
   const {user} = useUserContext();

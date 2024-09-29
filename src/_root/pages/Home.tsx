@@ -3,8 +3,22 @@ import Loader from '@/components/shared/Loader';
 import { useGetRecentPosts } from '@/lib/react-query/queriesAndMutations';
 import { Models } from 'appwrite';
 import PostCard from '@/components/shared/PostCard';
+import { useEffect } from 'react';
+import { useUserContext } from '@/context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
+  const {user} = useUserContext();
+  console.log(user);
+  
+  useEffect(()=>{
+   if(user.name===""){
+    navigate("/sign-in");
+  console.log("user not available ");
+  
+   } 
+  });
   
 
   const {data:posts,isPending : isPostLoading,}= useGetRecentPosts();
